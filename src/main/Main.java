@@ -55,11 +55,18 @@ public class Main {
     }
 
     void lockShared(Transacao transacao, Character variavel) {
+        if (lock(variavel) == 'U') {
+            listaRead(variavel).add(transacao);
+            lock(variavel) = 'S';
+        } else if (lock(variavel) == 'S') {
+            listaRead(variavel).add(transacao);
+        } else {
+            listaWait(variavel).add(transicao);
+        }
 
     }
 
     void lockExclusive(Transacao transacao, Character variavel) {
-
     }
 
     void lock(Character variavel) {
@@ -67,7 +74,6 @@ public class Main {
     }
 
     //fila-wait
-    
     void unlock(Character variavel) {
 
     }

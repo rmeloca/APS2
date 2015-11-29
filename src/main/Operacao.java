@@ -12,7 +12,7 @@ package main;
 public class Operacao {
 
     private final Tipo tipo;
-    private Character variavel;
+    private Variavel variavel;
     private final Transacao transacao;
 
     public Operacao(Tipo tipo, Transacao transacao) {
@@ -21,11 +21,11 @@ public class Operacao {
         variavel = null;
     }
 
-    public void setVariavel(Character variavel) {
+    public void setVariavel(Variavel variavel) {
         this.variavel = variavel;
     }
 
-    public Character getVariavel() {
+    public Variavel getVariavel() {
         return variavel;
     }
 
