@@ -21,10 +21,15 @@ public class Main {
     public static void main(String[] args) {
         String linha;
         String[] operacoes;
+        Operacao operacao;
+        FileReader fileReader;
+        BufferedReader bufferedReader;
+        Agenda agenda;
+
+        agenda = new Agenda();
         try {
-            FileReader fileReader = new FileReader(Main.class.getResource("/arquivos/schedule1.txt").getFile());
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-            Operacao operacao;
+            fileReader = new FileReader(Main.class.getResource("/arquivos/schedule1.txt").getFile());
+            bufferedReader = new BufferedReader(fileReader);
             while (true) {
                 linha = bufferedReader.readLine();
                 if (linha == null) {
@@ -36,8 +41,9 @@ public class Main {
                     if (operacaoStr.charAt(0) == 'W') {
                         operacao = new Operacao(Tipo.WRITE, new Transacao((int) operacaoStr.charAt(1)));
                     } else {
-                        operacao = new Operacao(Tipo.WRITE, new Transacao((int) operacaoStr.charAt(1)));
+                        operacao = new Operacao(Tipo.READ, new Transacao((int) operacaoStr.charAt(1)));
                     }
+                    agenda.addOperacao(operacao);
                 }
             }
 
@@ -47,4 +53,23 @@ public class Main {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    void lockShared(Transacao transacao, Character variavel) {
+
+    }
+
+    void lockExclusive(Transacao transacao, Character variavel) {
+
+    }
+
+    void lock(Character variavel) {
+
+    }
+
+    //fila-wait
+    
+    void unlock(Character variavel) {
+
+    }
+
 }

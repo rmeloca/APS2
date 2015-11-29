@@ -14,4 +14,11 @@ import java.util.List;
 public class Agenda {
 
     List<Operacao> operacoes;
+
+    public void addOperacao(Operacao operacao) {
+        if (!operacoes.contains(operacao)) {
+            operacoes.add(operacao);
+        }
+    }
+
 }
