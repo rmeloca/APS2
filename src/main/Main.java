@@ -5,9 +5,7 @@
  */
 package main;
 
-import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,63 +17,13 @@ import java.util.logging.Logger;
 public class Main {
 
     public static void main(String[] args) {
-        String linha;
-        String[] operacoes;
-        Operacao operacao;
-        FileReader fileReader;
-        BufferedReader bufferedReader;
-        Agenda agenda;
-
-        agenda = new Agenda();
+        AgendaController agendaController = new AgendaController();
         try {
-            fileReader = new FileReader(Main.class.getResource("/arquivos/schedule1.txt").getFile());
-            bufferedReader = new BufferedReader(fileReader);
-            while (true) {
-                linha = bufferedReader.readLine();
-                if (linha == null) {
-                    break;
-                }
-                operacoes = linha.replace(" ", "").split(";");
-                for (String operacaoStr : operacoes) {
-                    System.out.println(operacaoStr);
-                    if (operacaoStr.charAt(0) == 'W') {
-                        operacao = new Operacao(Tipo.WRITE, new Transacao((int) operacaoStr.charAt(1)));
-                    } else {
-                        operacao = new Operacao(Tipo.READ, new Transacao((int) operacaoStr.charAt(1)));
-                    }
-                    agenda.addOperacao(operacao);
-                }
-            }
-
+            agendaController.getAgendaFromFile(Main.class.getResource("/arquivos/schedule1.txt").getFile());
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
-    void lockShared(Transacao transacao, Character variavel) {
-        if (lock(variavel) == 'U') {
-            listaRead(variavel).add(transacao);
-            lock(variavel) = 'S';
-        } else if (lock(variavel) == 'S') {
-            listaRead(variavel).add(transacao);
-        } else {
-            listaWait(variavel).add(transicao);
-        }
-
-    }
-
-    void lockExclusive(Transacao transacao, Character variavel) {
-    }
-
-    void lock(Character variavel) {
-
-    }
-
-    //fila-wait
-    void unlock(Character variavel) {
-
-    }
-
 }

@@ -30,4 +30,42 @@ public class Variavel {
         return status;
     }
 
+    public void addExecutando(Operacao operacao) {
+        executando.add(operacao);
+    }
+
+    public void addFilaEspera(Operacao operacao) {
+        filaEspera.add(operacao);
+    }
+
+    void getSharedLock(Operacao operacao) {
+        switch (getStatus()) {
+            case UNLOCKED:
+                addExecutando(operacao);
+                setStatus(Status.SHARE_LOCKED);
+                break;
+            case SHARE_LOCKED:
+                addExecutando(operacao);
+                break;
+            default:
+                addFilaEspera(operacao);
+                break;
+        }
+    }
+
+    void getExclusiveLock(Operacao operacao) {
+        if (getStatus().equals(Status.UNLOCKED)) {
+            setStatus(Status.EXCLUSIVE_LOCKED);
+            addExecutando(operacao);
+        } else {
+            addFilaEspera(operacao);
+        }
+
+    }
+
+    void unlock(Character variavel) {
+        if (getStatus().equals(Status.EXCLUSIVE_LOCKED)) {
+           
+        }
+    }
 }
