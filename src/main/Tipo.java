@@ -13,8 +13,8 @@ public enum Tipo {
     READ, WRITE, COMMIT;
 
     @Override
-    public Character toString() {
-        Character retorno = null;
+    public String toString() {
+        String retorno = null;
         switch (this) {
             case READ:
                 retorno = "R";

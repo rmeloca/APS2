@@ -18,6 +18,19 @@ public class Transacao {
     private List<Operacao> operacoes;
     private int indice;
 
+    public boolean estaNaEspera() {
+        Status s;
+        for (Operacao op1 : operacoes) {
+            for (Operacao op2 : op1.getVariavel().filaEspera) {
+                if (op1.equals(op2)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     public Transacao(int id) {
         this.id = id;
         operacoes = new ArrayList<>();

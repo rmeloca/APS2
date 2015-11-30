@@ -28,7 +28,8 @@ public class AgendaController {
         Transacao transacao;
 
         agenda = new Agenda();
-
+        agenda.setIndice(0);
+        
         fileReader = new FileReader(url);
         bufferedReader = new BufferedReader(fileReader);
         while ((linha = bufferedReader.readLine()) != null) {
