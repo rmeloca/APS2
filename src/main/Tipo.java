@@ -11,4 +11,21 @@ package main;
  */
 public enum Tipo {
     READ, WRITE, COMMIT;
+
+    @Override
+    public Character toString() {
+        Character retorno = null;
+        switch (this) {
+            case READ:
+                retorno = "R";
+                break;
+            case WRITE:
+                retorno = "W";
+                break;
+            case COMMIT:
+                retorno = "C";
+                break;
+        }
+        return retorno;
+    }
 }

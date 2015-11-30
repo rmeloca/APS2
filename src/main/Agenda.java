@@ -25,4 +25,10 @@ public class Agenda {
         return operacoes;
     }
 
+    public void imprimir() {
+        for (Operacao operacao : operacoes) {
+            System.out.println(operacao.getTipo().toString());
+        }
+    }
+
 }

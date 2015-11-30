@@ -33,10 +33,10 @@ public class AgendaController {
         bufferedReader = new BufferedReader(fileReader);
         while ((linha = bufferedReader.readLine()) != null) {
             operacoes = linha.replace(" ", "").split(";");
-//            for (int i = 0; i < operacoes.length; i++) {
-//                String operacoe = operacoes[i];
-            for (String operacaoStr : operacoes) {
+            for (int i = 0; i < operacoes.length; i++) {
+                String operacaoStr = operacoes[i];
                 transacao = new Transacao((int) operacaoStr.charAt(1));
+                transacao.setIndice(i);
                 switch (operacaoStr.charAt(0)) {
                     case 'W':
                         operacao = new Operacao(Tipo.WRITE, transacao);
