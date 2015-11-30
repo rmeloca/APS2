@@ -44,6 +44,10 @@ public class Transacao {
         return indice;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public void setIndice(int indice) {
         this.indice = indice;
     }

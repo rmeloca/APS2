@@ -5,6 +5,7 @@
  */
 package main;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,6 +16,11 @@ public class Agenda {
 
     private List<Operacao> operacoes;
     private int indice;
+
+    public Agenda() {
+        operacoes = new ArrayList<>();
+        indice = 0;
+    }
 
     public int getIndice() {
         return indice;
@@ -36,8 +42,13 @@ public class Agenda {
 
     public void imprimir() {
         for (Operacao operacao : operacoes) {
-            System.out.println(operacao.getTipo().toString());
+            System.out.print(operacao.getTipo().toString());
+            System.out.print(operacao.getTransacao().getId());
+            if (!operacao.getTipo().equals(Tipo.COMMIT)) {
+                System.out.print("(" + operacao.getVariavel().getValor() + "); ");
+            }
         }
+        System.out.println();
     }
 
     public Operacao getNext() {

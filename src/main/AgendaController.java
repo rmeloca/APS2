@@ -19,6 +19,10 @@ public class AgendaController {
     private Agenda agenda;
     private Agenda historia;
 
+    public Agenda getAgenda() {
+        return agenda;
+    }
+
     void getAgendaFromFile(String url) throws FileNotFoundException, IOException {
         String linha;
         String[] operacoes;
@@ -29,7 +33,7 @@ public class AgendaController {
 
         agenda = new Agenda();
         agenda.setIndice(0);
-        
+
         fileReader = new FileReader(url);
         bufferedReader = new BufferedReader(fileReader);
         while ((linha = bufferedReader.readLine()) != null) {
@@ -41,9 +45,11 @@ public class AgendaController {
                 switch (operacaoStr.charAt(0)) {
                     case 'W':
                         operacao = new Operacao(Tipo.WRITE, transacao);
+                        operacao.setVariavel(new Variavel(operacaoStr.charAt(3)));
                         break;
                     case 'R':
                         operacao = new Operacao(Tipo.READ, transacao);
+                        operacao.setVariavel(new Variavel(operacaoStr.charAt(3)));
                         break;
                     default:
                         operacao = new Operacao(Tipo.COMMIT, transacao);

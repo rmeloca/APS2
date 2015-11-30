@@ -31,6 +31,10 @@ public class Variavel {
         return status;
     }
 
+    public Character getValor() {
+        return valor;
+    }
+
     public void addExecutando(Operacao operacao) {
         executando.add(operacao);
     }
@@ -67,11 +71,9 @@ public class Variavel {
     ArrayList<Operacao> nextExecutando() {
         ArrayList<Operacao> list = new ArrayList<>();
         int t = executando.size();
-       
-        
+
         return list;
     }
-    
 
     void unlock(Character variavel) {
         if (getStatus().equals(Status.EXCLUSIVE_LOCKED)) {
