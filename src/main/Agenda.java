@@ -14,7 +14,15 @@ import java.util.List;
 public class Agenda {
 
     private List<Operacao> operacoes;
+    private int indice;
 
+    public int getIndice() {
+        return indice;
+    }
+
+    public void setIndice(int indice) {
+        this.indice = indice;
+    }
     public void addOperacao(Operacao operacao) {
         if (!operacoes.contains(operacao)) {
             operacoes.add(operacao);
@@ -24,5 +32,10 @@ public class Agenda {
     public List<Operacao> getOperacoes() {
         return operacoes;
     }
-
+    
+    public Operacao getNext(){
+        
+        
+        return null;
+    }
 }
