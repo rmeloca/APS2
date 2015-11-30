@@ -5,6 +5,7 @@
  */
 package main;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -63,9 +64,18 @@ public class Variavel {
 
     }
 
+    ArrayList<Operacao> nextExecutando() {
+        ArrayList<Operacao> list = new ArrayList<>();
+        int t = executando.size();
+       
+        
+        return list;
+    }
+    
+
     void unlock(Character variavel) {
         if (getStatus().equals(Status.EXCLUSIVE_LOCKED)) {
-           
+
         }
     }
 }

@@ -5,6 +5,8 @@
  */
 package main;
 
+import java.util.List;
+
 /**
  *
  * @author romulo
@@ -12,6 +14,7 @@ package main;
 public class Transacao {
 
     private final int id;
+    List<Operacao> operacoes;
 
     public Transacao(int id) {
         this.id = id;
