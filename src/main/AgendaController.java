@@ -17,6 +17,7 @@ import java.io.IOException;
 public class AgendaController {
 
     private Agenda agenda;
+    private Agenda historia;
 
     void getAgendaFromFile(String url) throws FileNotFoundException, IOException {
         String linha;
@@ -24,6 +25,7 @@ public class AgendaController {
         Operacao operacao;
         FileReader fileReader;
         BufferedReader bufferedReader;
+        Transacao transacao;
 
         agenda = new Agenda();
 
@@ -31,15 +33,37 @@ public class AgendaController {
         bufferedReader = new BufferedReader(fileReader);
         while ((linha = bufferedReader.readLine()) != null) {
             operacoes = linha.replace(" ", "").split(";");
+//            for (int i = 0; i < operacoes.length; i++) {
+//                String operacoe = operacoes[i];
             for (String operacaoStr : operacoes) {
-                System.out.println(operacaoStr);
-                if (operacaoStr.charAt(0) == 'W') {
-                    operacao = new Operacao(Tipo.WRITE, new Transacao((int) operacaoStr.charAt(1)));
-                } else {
-                    operacao = new Operacao(Tipo.READ, new Transacao((int) operacaoStr.charAt(1)));
+                transacao = new Transacao((int) operacaoStr.charAt(1));
+                switch (operacaoStr.charAt(0)) {
+                    case 'W':
+                        operacao = new Operacao(Tipo.WRITE, transacao);
+                        break;
+                    case 'R':
+                        operacao = new Operacao(Tipo.READ, transacao);
+                        break;
+                    default:
+                        operacao = new Operacao(Tipo.COMMIT, transacao);
+                        break;
                 }
+                transacao.addOperacao(operacao);
                 agenda.addOperacao(operacao);
             }
         }
+    }
+
+    public void executar() {
+        historia = new Agenda();
+        Operacao operacao;
+        for (int i = 0; i < agenda.getOperacoes().size(); i++) {
+            operacao = agenda.getOperacoes().get(i);
+            historia.addOperacao(operacao);
+        }
+    }
+
+    public Agenda getHistoria() {
+        return historia;
     }
 }

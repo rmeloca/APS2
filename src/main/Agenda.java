@@ -13,12 +13,16 @@ import java.util.List;
  */
 public class Agenda {
 
-    List<Operacao> operacoes;
+    private List<Operacao> operacoes;
 
     public void addOperacao(Operacao operacao) {
         if (!operacoes.contains(operacao)) {
             operacoes.add(operacao);
         }
+    }
+
+    public List<Operacao> getOperacoes() {
+        return operacoes;
     }
 
 }

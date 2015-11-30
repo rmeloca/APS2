@@ -5,6 +5,7 @@
  */
 package main;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,10 +15,24 @@ import java.util.List;
 public class Transacao {
 
     private final int id;
-    List<Operacao> operacoes;
+    private List<Operacao> operacoes;
+    private int indice;
 
     public Transacao(int id) {
         this.id = id;
+        operacoes = new ArrayList<>();
+    }
+
+    public void addOperacao(Operacao operacao) {
+        operacoes.add(operacao);
+    }
+
+    public int getIndice() {
+        return indice;
+    }
+
+    public void setIndice(int indice) {
+        this.indice = indice;
     }
 
 }
