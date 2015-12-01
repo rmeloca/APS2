@@ -16,8 +16,8 @@ public class Variavel {
 
     private final Character valor;
     private Status status;
-    List<Operacao> executando;
-    List<Operacao> filaEspera;
+    private List<Operacao> executando;
+    private List<Operacao> filaEspera;
 
     public Variavel(Character valor) {
         this.valor = valor;
@@ -43,7 +43,7 @@ public class Variavel {
         filaEspera.add(operacao);
     }
 
-    void getSharedLock(Operacao operacao) {
+    public void getSharedLock(Operacao operacao) {
         switch (getStatus()) {
             case UNLOCKED:
                 addExecutando(operacao);
@@ -58,7 +58,7 @@ public class Variavel {
         }
     }
 
-    void getExclusiveLock(Operacao operacao) {
+    public void getExclusiveLock(Operacao operacao) {
         if (getStatus().equals(Status.UNLOCKED)) {
             setStatus(Status.EXCLUSIVE_LOCKED);
             addExecutando(operacao);
@@ -68,14 +68,14 @@ public class Variavel {
 
     }
 
-    ArrayList<Operacao> nextExecutando() {
+    public List<Operacao> nextExecutando() {
         ArrayList<Operacao> list = new ArrayList<>();
         int t = executando.size();
 
         return list;
     }
 
-    void unlock(Character variavel) {
+    public void unlock(Character variavel) {
         if (getStatus().equals(Status.EXCLUSIVE_LOCKED)) {
 
         }

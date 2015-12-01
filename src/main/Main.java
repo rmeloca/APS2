@@ -19,13 +19,15 @@ public class Main {
     public static void main(String[] args) {
         AgendaController agendaController = new AgendaController();
         try {
-            agendaController.getAgendaFromFile(Main.class.getResource("/arquivos/schedule1.txt").getFile());
+            agendaController.parseAgendaFromFile(Main.class.getResource("/arquivos/schedule1.txt").getFile());
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
         agendaController.getAgenda().imprimir();
-//        agendaController.getHistoria().imprimir();
+        if (agendaController.getHistoria() != null) {
+            agendaController.getHistoria().imprimir();
+        }
     }
 }

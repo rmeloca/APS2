@@ -23,7 +23,11 @@ public class AgendaController {
         return agenda;
     }
 
-    void getAgendaFromFile(String url) throws FileNotFoundException, IOException {
+    public Agenda getHistoria() {
+        return historia;
+    }
+
+    void parseAgendaFromFile(String url) throws FileNotFoundException, IOException {
         String linha;
         String[] operacoes;
         Operacao operacao;
@@ -40,7 +44,7 @@ public class AgendaController {
             operacoes = linha.replace(" ", "").split(";");
             for (int i = 0; i < operacoes.length; i++) {
                 String operacaoStr = operacoes[i];
-                transacao = new Transacao((int) operacaoStr.charAt(1));
+                transacao = new Transacao(Character.getNumericValue(operacaoStr.charAt(1)));
                 transacao.setIndice(i);
                 switch (operacaoStr.charAt(0)) {
                     case 'W':
@@ -68,9 +72,5 @@ public class AgendaController {
             operacao = agenda.getOperacoes().get(i);
             historia.addOperacao(operacao);
         }
-    }
-
-    public Agenda getHistoria() {
-        return historia;
     }
 }

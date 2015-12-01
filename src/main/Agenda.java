@@ -45,8 +45,9 @@ public class Agenda {
             System.out.print(operacao.getTipo().toString());
             System.out.print(operacao.getTransacao().getId());
             if (!operacao.getTipo().equals(Tipo.COMMIT)) {
-                System.out.print("(" + operacao.getVariavel().getValor() + "); ");
+                System.out.print("(" + operacao.getVariavel().getValor() + ")");
             }
+            System.out.print("; ");
         }
         System.out.println();
     }

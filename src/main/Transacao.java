@@ -18,6 +18,23 @@ public class Transacao {
     private List<Operacao> operacoes;
     private int indice;
 
+    public Transacao(int id) {
+        this.id = id;
+        operacoes = new ArrayList<>();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public int getIndice() {
+        return indice;
+    }
+
+    public void setIndice(int indice) {
+        this.indice = indice;
+    }
+
     public boolean estaNaEspera() {
         Status s;
         for (Operacao op1 : operacoes) {
@@ -31,25 +48,8 @@ public class Transacao {
         return false;
     }
 
-    public Transacao(int id) {
-        this.id = id;
-        operacoes = new ArrayList<>();
-    }
-
     public void addOperacao(Operacao operacao) {
         operacoes.add(operacao);
-    }
-
-    public int getIndice() {
-        return indice;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setIndice(int indice) {
-        this.indice = indice;
     }
 
 }
