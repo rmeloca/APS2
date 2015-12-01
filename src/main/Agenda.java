@@ -15,10 +15,14 @@ import java.util.List;
 public class Agenda {
 
     private List<Operacao> operacoes;
+    private List<Transacao> transacoes;
+    private List<Variavel> variaveis;
     private int indice;
 
     public Agenda() {
         operacoes = new ArrayList<>();
+        transacoes = new ArrayList<>();
+        variaveis = new ArrayList<>();
         indice = 0;
     }
 
@@ -38,6 +42,44 @@ public class Agenda {
 
     public List<Operacao> getOperacoes() {
         return operacoes;
+    }
+
+    public void addTransacao(Transacao transacao) {
+        if (!transacoes.contains(transacao)) {
+            transacoes.add(transacao);
+        }
+    }
+
+    public List<Transacao> getTransacoes() {
+        return transacoes;
+    }
+
+    public Transacao getTransacao(int id) {
+        for (Transacao transacao : getTransacoes()) {
+            if (transacao.getId() == id) {
+                return transacao;
+            }
+        }
+        return null;
+    }
+
+    public void addVariavel(Variavel variavel) {
+        if (!variaveis.contains(variavel)) {
+            variaveis.add(variavel);
+        }
+    }
+
+    public List<Variavel> getVariaveis() {
+        return variaveis;
+    }
+
+    public Variavel getVariavel(Character valor) {
+        for (Variavel variavel : getVariaveis()) {
+            if (variavel.getValor().equals(valor)) {
+                return variavel;
+            }
+        }
+        return null;
     }
 
     public void imprimir() {

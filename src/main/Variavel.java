@@ -21,6 +21,8 @@ public class Variavel {
 
     public Variavel(Character valor) {
         this.valor = valor;
+        executando = new ArrayList<>();
+        filaEspera = new ArrayList<>();
     }
 
     public void setStatus(Status status) {
@@ -84,4 +86,10 @@ public class Variavel {
 
         }
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return ((Variavel) obj).getValor().equals(valor);
+    }
+
 }

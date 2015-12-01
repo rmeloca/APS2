@@ -50,4 +50,9 @@ public class Transacao {
         operacoes.add(operacao);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return ((Transacao) obj).id == id;
+    }
+
 }

@@ -34,6 +34,9 @@ public class AgendaController {
         FileReader fileReader;
         BufferedReader bufferedReader;
         Transacao transacao;
+        int idTransacao;
+        Variavel variavel;
+        Character valor;
 
         agenda = new Agenda();
         agenda.setIndice(0);
@@ -44,16 +47,33 @@ public class AgendaController {
             operacoes = linha.replace(" ", "").split(";");
             for (int i = 0; i < operacoes.length; i++) {
                 String operacaoStr = operacoes[i];
-                transacao = new Transacao(Character.getNumericValue(operacaoStr.charAt(1)));
-                transacao.setIndice(i);
+                idTransacao = Character.getNumericValue(operacaoStr.charAt(1));
+                transacao = agenda.getTransacao(idTransacao);
+                if (transacao == null) {
+                    transacao = new Transacao(idTransacao);
+                    transacao.setIndice(i);
+                    agenda.addTransacao(transacao);
+                }
                 switch (operacaoStr.charAt(0)) {
                     case 'W':
                         operacao = new Operacao(Tipo.WRITE, transacao);
-                        operacao.setVariavel(new Variavel(operacaoStr.charAt(3)));
+                        valor = operacaoStr.charAt(3);
+                        variavel = agenda.getVariavel(valor);
+                        if (variavel == null) {
+                            variavel = new Variavel(valor);
+                            agenda.addVariavel(variavel);
+                        }
+                        operacao.setVariavel(variavel);
                         break;
                     case 'R':
                         operacao = new Operacao(Tipo.READ, transacao);
-                        operacao.setVariavel(new Variavel(operacaoStr.charAt(3)));
+                        valor = operacaoStr.charAt(3);
+                        variavel = agenda.getVariavel(valor);
+                        if (variavel == null) {
+                            variavel = new Variavel(valor);
+                            agenda.addVariavel(variavel);
+                        }
+                        operacao.setVariavel(variavel);
                         break;
                     default:
                         operacao = new Operacao(Tipo.COMMIT, transacao);
