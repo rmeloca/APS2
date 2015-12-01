@@ -43,6 +43,10 @@ public class Variavel {
         filaEspera.add(operacao);
     }
 
+    public List<Operacao> getFilaEspera() {
+        return filaEspera;
+    }
+
     public void getSharedLock(Operacao operacao) {
         switch (getStatus()) {
             case UNLOCKED:

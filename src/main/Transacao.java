@@ -36,15 +36,13 @@ public class Transacao {
     }
 
     public boolean estaNaEspera() {
-        Status s;
-        for (Operacao op1 : operacoes) {
-            for (Operacao op2 : op1.getVariavel().filaEspera) {
-                if (op1.equals(op2)) {
-                    return true;
-                }
-            }
-        }
+        Operacao operacao;
 
+        operacao = operacoes.get(indice);
+        if (!operacao.getTipo().equals(Tipo.COMMIT)) {
+            operacao.getVariavel().getFilaEspera().contains(operacao);
+            return true;
+        }
         return false;
     }
 
