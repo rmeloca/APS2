@@ -90,6 +90,7 @@ public class AgendaController {
         Operacao operacao;
         for (int i = 0; i < agenda.getOperacoes().size(); i++) {
             operacao = agenda.getOperacoes().get(i);
+            operacao.setExecutada(true);
             historia.addOperacao(operacao);
         }
     }

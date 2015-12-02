@@ -94,8 +94,14 @@ public class Agenda {
         System.out.println();
     }
 
-    public Operacao getNext() {
-
-        return null;
+    public Operacao getNextOperacao() {
+        Operacao operacao = null;
+        for (int i = 0; i < operacoes.size(); i++) {
+            operacao = operacoes.get(indice);
+            if (!operacao.isExecutada() && !operacao.getTransacao().estaNaEspera()) {
+                return operacao;
+            }
+        }
+        return operacao;
     }
 }
