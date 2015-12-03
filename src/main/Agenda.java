@@ -97,8 +97,10 @@ public class Agenda {
     public Operacao getNextOperacao() {
         Operacao operacao = null;
         for (int i = 0; i < operacoes.size(); i++) {
-            operacao = operacoes.get(indice);
+            operacao = operacoes.get(i);
             if (!operacao.isExecutada() && !operacao.getTransacao().estaNaEspera()) {
+                indice = i;
+                operacao.getTransacao().setIndice(i);
                 return operacao;
             }
         }

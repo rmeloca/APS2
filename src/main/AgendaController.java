@@ -88,10 +88,14 @@ public class AgendaController {
     public void executar() {
         historia = new Agenda();
         Operacao operacao;
-        for (int i = 0; i < agenda.getOperacoes().size(); i++) {
-            operacao = agenda.getOperacoes().get(i);
+        while ((operacao = agenda.getNextOperacao()) != null) {
             operacao.setExecutada(true);
             historia.addOperacao(operacao);
+        }
+        if (historia.getOperacoes().size() == agenda.getOperacoes().size()) {
+            //sucesso
+        } else {
+            //abort
         }
     }
 }
