@@ -15,18 +15,18 @@ import java.io.IOException;
  * @author romulo
  */
 public class AgendaController {
-
+    
     private Agenda agenda;
     private Agenda historia;
-
+    
     public Agenda getAgenda() {
         return agenda;
     }
-
+    
     public Agenda getHistoria() {
         return historia;
     }
-
+    
     void parseAgendaFromFile(String url) throws FileNotFoundException, IOException {
         String linha;
         String[] operacoes;
@@ -37,10 +37,10 @@ public class AgendaController {
         int idTransacao;
         Variavel variavel;
         Character valor;
-
+        
         agenda = new Agenda();
         agenda.setIndice(0);
-
+        
         fileReader = new FileReader(url);
         bufferedReader = new BufferedReader(fileReader);
         while ((linha = bufferedReader.readLine()) != null) {
@@ -84,12 +84,24 @@ public class AgendaController {
             }
         }
     }
-
+    
     public void executar() {
         historia = new Agenda();
         Operacao operacao;
+        
         while ((operacao = agenda.getNextOperacao()) != null) {
-            operacao.setExecutada(true);
+            switch (operacao.getTipo()) {
+                case COMMIT:
+                    operacao.setExecutada(true);
+                    operacao.getTransacao().unlockAll();
+                    break;
+                case READ:
+                    operacao.getVariavel().getSharedLock(operacao);
+                    break;
+                case WRITE:
+                    operacao.getVariavel().getExclusiveLock(operacao);
+                    break;
+            }
             historia.addOperacao(operacao);
         }
         if (historia.getOperacoes().size() == agenda.getOperacoes().size()) {
