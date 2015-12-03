@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  *
@@ -109,5 +110,61 @@ public class AgendaController {
         } else {
             //abort
         }
+    }
+
+    public void abortar(Transacao t, int pos) {
+        ArrayList<Variavel> listVar = new ArrayList<>();
+        ArrayList<Integer> listPos = new ArrayList<>();
+        ArrayList<Transacao> listTran = new ArrayList<>();
+        int qtdVar;
+        Transacao tran;
+        Variavel v1;
+        Variavel v2;
+        Operacao op;
+        Agenda nova = new Agenda();
+
+        nova.setIndice(historia.getIndice());
+        listTran.add(t);
+
+        //Verifica quais variaveis foram alteradas
+        for (int i = pos; i > 0; i--) {
+            op = historia.getOperacoes().get(i);
+            if ((op.getTransacao().getId() == t.getId()) && (op.getTipo().toString().equals("W"))) {
+                if (!(listVar.contains(op.getVariavel()))) {
+                    listVar.add(op.getVariavel());
+                    listPos.add(i);
+                }
+            }
+
+        }
+        qtdVar = listVar.size();
+        
+        //Verifica quais transacoes foram afetadas
+        for (int i = 0; i < qtdVar; i++) {
+            
+            for(int j = listPos.get(i); j < pos; j++){
+                v1 = historia.getOperacoes().get(j).getVariavel();
+                v2 = listVar.get(i);
+                if(v1.toString().equals(v2.toString())){
+                    tran = historia.getOperacoes().get(j).getTransacao();
+                    tran.unlockAll();
+                    listTran.add(tran);
+                }
+            
+            }
+        }
+
+        //Realocando op abortadas
+        for (int i = 0; i < pos; i++) {
+            op = historia.getOperacoes().get(i);
+            if ((listTran.contains(op.getTransacao()))) {
+                historia.getOperacoes().remove(i);
+                i--;
+                pos--;
+                historia.getOperacoes().add(op);
+            
+            }
+        }
+
     }
 }
