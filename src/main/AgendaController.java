@@ -100,22 +100,24 @@ public class AgendaController {
         }
     }
 
-    public void abortar(Transacao t, int pos) {
+    public void abortar(Transacao t) {
         ArrayList<Variavel> listVar = new ArrayList<>();
         ArrayList<Integer> listPos = new ArrayList<>();
         ArrayList<Transacao> listTran = new ArrayList<>();
         int qtdVar;
+        int pos;
         Transacao tran;
         Variavel v1;
         Variavel v2;
         Operacao op;
         Agenda nova = new Agenda();
 
+        pos = historia.getOperacoes().size();
         nova.setIndice(historia.getIndice());
         listTran.add(t);
 
         //Verifica quais variaveis foram alteradas
-        for (int i = pos; i > 0; i--) {
+        for (int i = 0; i < pos; i++) {
             op = historia.getOperacoes().get(i);
             if ((op.getTransacao().getId() == t.getId()) && (op.getTipo().toString().equals("W"))) {
                 if (!(listVar.contains(op.getVariavel()))) {
@@ -126,19 +128,19 @@ public class AgendaController {
 
         }
         qtdVar = listVar.size();
-        
+
         //Verifica quais transacoes foram afetadas
         for (int i = 0; i < qtdVar; i++) {
-            
-            for(int j = listPos.get(i); j < pos; j++){
+
+            for (int j = listPos.get(i); j < pos; j++) {
                 v1 = historia.getOperacoes().get(j).getVariavel();
                 v2 = listVar.get(i);
-                if(v1.toString().equals(v2.toString())){
+                if (v1.toString().equals(v2.toString())) {
                     tran = historia.getOperacoes().get(j).getTransacao();
-                    tran.unlockAll();
+                    tran.unlockAll(false);
                     listTran.add(tran);
                 }
-            
+
             }
         }
 
@@ -149,8 +151,7 @@ public class AgendaController {
                 historia.getOperacoes().remove(i);
                 i--;
                 pos--;
-                historia.getOperacoes().add(op);
-            
+//altero ind na agenda            
             }
         }
 
