@@ -55,4 +55,15 @@ public class Transacao {
         return ((Transacao) obj).id == id;
     }
 
+    void unlockAll() {
+        unlockAll(true);
+    }
+
+    void unlockAll(boolean foramExecutadas) {
+        for (Operacao operacao : operacoes) {
+            operacao.getVariavel().unlock(operacao);
+            operacao.setExecutada(foramExecutadas);
+        }
+    }
+
 }
