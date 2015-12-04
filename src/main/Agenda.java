@@ -100,7 +100,6 @@ public class Agenda {
             operacao = operacoes.get(i);
             if (!operacao.isExecutada() && !operacao.getTransacao().estaNaEspera()) {
                 indice = i;
-                operacao.getTransacao().setIndice(i);
                 return operacao;
             }
         }

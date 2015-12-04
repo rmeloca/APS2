@@ -21,6 +21,7 @@ public class Transacao {
     public Transacao(int id) {
         this.id = id;
         operacoes = new ArrayList<>();
+        indice = 0;
     }
 
     public int getId() {
@@ -38,7 +39,6 @@ public class Transacao {
     public List<Operacao> getOperacoes() {
         return operacoes;
     }
-
 
     public boolean estaNaEspera() {
         Operacao operacao;
@@ -62,7 +62,9 @@ public class Transacao {
 
     void unlockAll(boolean foramExecutadas) {
         for (Operacao operacao : operacoes) {
-            operacao.getVariavel().unlock(operacao);
+            if (!operacao.getTipo().equals(Tipo.COMMIT)) {
+                operacao.getVariavel().unlock(operacao);
+            }
             operacao.setExecutada(foramExecutadas);
         }
     }
