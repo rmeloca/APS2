@@ -9,6 +9,10 @@ package main;
  *
  * @author romulo
  */
+
+/**
+ * Status de uma variavel
+ */
 public enum Status {
     UNLOCKED, SHARE_LOCKED, EXCLUSIVE_LOCKED;
 }
