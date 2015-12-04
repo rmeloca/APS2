@@ -57,6 +57,7 @@ public class Variavel {
         if (filaEspera.isEmpty()) {
             return;
         }
+        setStatus(Status.UNLOCKED);
         if (filaEspera.get(0).equals(Tipo.WRITE)) {
             filaEspera.remove(filaEspera.get(0));
         }
@@ -64,7 +65,7 @@ public class Variavel {
             if (filaEspera.get(i).getTipo().equals(Tipo.WRITE)) {
                 return;
             }
-                filaEspera.remove(filaEspera.get(i));
+            filaEspera.remove(filaEspera.get(i));
         }
         return;
 
@@ -77,9 +78,14 @@ public class Variavel {
                 setStatus(Status.SHARE_LOCKED);
                 break;
             case SHARE_LOCKED:
-                addExecutando(operacao);
+                if (!executando.contains(operacao)) {
+                    addExecutando(operacao);
+                }
                 break;
             default:
+                if (executando.get(0).getVariavel().equals(operacao.getVariavel()) && executando.get(0).getTransacao().equals(operacao.getTransacao())) {
+                    return true;
+                }
                 operacao.setTempoInicial(System.currentTimeMillis());
                 addFilaEspera(operacao);
                 return false;
@@ -88,7 +94,7 @@ public class Variavel {
     }
 
     boolean getExclusiveLock(Operacao operacao) {
-        if (getStatus().equals(Status.UNLOCKED)) {
+        if (getStatus().equals(Status.UNLOCKED) || ((executando.size() == 1)) && (executando.get(0).getVariavel().equals(operacao.getVariavel()) && executando.get(0).getTransacao().equals(operacao.getTransacao()))) {
             setStatus(Status.EXCLUSIVE_LOCKED);
             addExecutando(operacao);
             return true;
