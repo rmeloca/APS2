@@ -49,7 +49,8 @@ public class Variavel {
     public List<Operacao> getFilaEspera() {
         return filaEspera;
     }
-
+    
+    //Acorda a fila de espera
     public void nextExecutando() {
         if (!executando.isEmpty()) {
             return;
@@ -71,6 +72,7 @@ public class Variavel {
 
     }
 
+    //Poem a operacao na fila do shared lock ou permite executa-la
     boolean getSharedLock(Operacao operacao) {
         switch (getStatus()) {
             case UNLOCKED:
@@ -93,6 +95,7 @@ public class Variavel {
         return true;
     }
 
+    //Poem a operacao na fila do exclusive lock ou permite executa-la
     boolean getExclusiveLock(Operacao operacao) {
         if (getStatus().equals(Status.UNLOCKED) || ((executando.size() == 1)) && (executando.get(0).getVariavel().equals(operacao.getVariavel()) && executando.get(0).getTransacao().equals(operacao.getTransacao()))) {
             setStatus(Status.EXCLUSIVE_LOCKED);
@@ -105,7 +108,7 @@ public class Variavel {
         return false;
     }
 
-    //se for preciso manter a assinatura: transacao.getOperacoes.get(transacao.getIndice());
+    //Libera para novas transacoes executarem
     public void unlock(Operacao operacao) {
         if (!executando.contains(operacao)) {
             return;
@@ -115,7 +118,6 @@ public class Variavel {
             setStatus(Status.UNLOCKED);
         } else if (getStatus().equals(Status.SHARE_LOCKED)) {
             executando.remove(operacao);
-            //equals?
             //haverá apenas um objeto de mesmo tipo, então não será um problema remoção por comparação
             if (executando.isEmpty()) {
                 nextExecutando();

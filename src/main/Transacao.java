@@ -55,7 +55,8 @@ public class Transacao {
     public boolean equals(Object obj) {
         return ((Transacao) obj).id == id;
     }
-
+    
+    //retorna todas variaveis usadas pela transacao
     private List<Variavel> getVariaveis() {
         List<Variavel> variaveis = new ArrayList<>();
         for (Operacao operacao : operacoes) {
@@ -65,15 +66,17 @@ public class Transacao {
         }
         return variaveis;
     }
-
+    //Pega a operacao de uma variavel que possui maior prioridade em filas
     private Operacao getMaiorPrioridade(Variavel variavel) {
         Operacao menor = null;
         for (Operacao operacao : operacoes) {
-            if (operacao.getVariavel().equals(variavel)) {
-                if (operacao.getTipo().equals(Tipo.WRITE)) {
-                    return operacao;
-                } else if (menor == null) {
-                    menor = operacao;
+            if (!operacao.getTipo().equals(Tipo.COMMIT)) {
+                if (operacao.getVariavel().equals(variavel)) {
+                    if (operacao.getTipo().equals(Tipo.WRITE)) {
+                        return operacao;
+                    } else if (menor == null) {
+                        menor = operacao;
+                    }
                 }
             }
         }
@@ -83,7 +86,7 @@ public class Transacao {
     void unlockAll() {
         unlockAll(true);
     }
-
+    //Libera todas as filas ocupadas por alguma transacao
     void unlockAll(boolean foramExecutadas) {
         Operacao operacao;
         for (Variavel variavel : getVariaveis()) {

@@ -27,7 +27,7 @@ public class AgendaController {
     public Agenda getHistoria() {
         return historia;
     }
-
+    //Lê o arquivo e popula as classes
     void parseAgendaFromFile(String url) throws FileNotFoundException, IOException {
         FileReader fileReader;
         BufferedReader bufferedReader;
@@ -84,7 +84,7 @@ public class AgendaController {
             }
         }
     }
-
+    //Chama as determinadas funções para cada caso
     public void executar() {
         historia = new Agenda();
         Operacao operacao;
@@ -122,7 +122,10 @@ public class AgendaController {
         }
 
     }
-
+    /**
+     * Retira todas operações de uma transação que estão em filas de espera ou executando
+     * @param t 
+     */
     public void abortar(Transacao t) {
         ArrayList<Variavel> listVar = new ArrayList<>();
         ArrayList<Integer> listPos = new ArrayList<>();
@@ -182,6 +185,11 @@ public class AgendaController {
 
     }
 
+    /**
+     * Retorna o indice de uma operação
+     * @param op
+     * @return 
+     */
     int getIndOp(Operacao op) {
 
         for (int i = 0; i < agenda.getOperacoes().size(); i++) {

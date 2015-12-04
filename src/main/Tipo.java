@@ -9,9 +9,14 @@ package main;
  *
  * @author romulo
  */
+
 public enum Tipo {
     READ, WRITE, COMMIT;
 
+    /**
+     * Transforma um tipo em string
+     * @return 
+     */
     @Override
     public String toString() {
         String retorno = null;
