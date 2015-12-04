@@ -23,6 +23,7 @@ public class Variavel {
         this.valor = valor;
         executando = new ArrayList<>();
         filaEspera = new ArrayList<>();
+        status = Status.UNLOCKED;
     }
 
     public void setStatus(Status status) {

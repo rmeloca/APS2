@@ -26,6 +26,7 @@ public class Main {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
         agendaController.getAgenda().imprimir();
+        agendaController.executar();
         if (agendaController.getHistoria() != null) {
             agendaController.getHistoria().imprimir();
         }

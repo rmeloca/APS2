@@ -39,11 +39,7 @@ public class Transacao {
         Operacao operacao;
 
         operacao = operacoes.get(indice);
-        if (!operacao.getTipo().equals(Tipo.COMMIT)) {
-            operacao.getVariavel().getFilaEspera().contains(operacao);
-            return true;
-        }
-        return false;
+        return !operacao.getTipo().equals(Tipo.COMMIT) && operacao.getVariavel().getFilaEspera().contains(operacao);
     }
 
     public void addOperacao(Operacao operacao) {

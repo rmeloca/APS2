@@ -16,32 +16,33 @@ import java.util.ArrayList;
  * @author romulo
  */
 public class AgendaController {
-    
+
     private Agenda agenda;
     private Agenda historia;
-    
+
     public Agenda getAgenda() {
         return agenda;
     }
-    
+
     public Agenda getHistoria() {
         return historia;
     }
-    
+
     void parseAgendaFromFile(String url) throws FileNotFoundException, IOException {
+        FileReader fileReader;
+        BufferedReader bufferedReader;
         String linha;
         String[] operacoes;
         Operacao operacao;
-        FileReader fileReader;
-        BufferedReader bufferedReader;
         Transacao transacao;
-        int idTransacao;
-        Variavel variavel;
         Character valor;
-        
+        Variavel variavel;
+        int idTransacao;
+        int indiceAgenda;
+
         agenda = new Agenda();
-        agenda.setIndice(0);
-        
+        indiceAgenda = 0;
+
         fileReader = new FileReader(url);
         bufferedReader = new BufferedReader(fileReader);
         while ((linha = bufferedReader.readLine()) != null) {
@@ -52,7 +53,7 @@ public class AgendaController {
                 transacao = agenda.getTransacao(idTransacao);
                 if (transacao == null) {
                     transacao = new Transacao(idTransacao);
-                    transacao.setIndice(i);
+                    transacao.setIndice(indiceAgenda);
                     agenda.addTransacao(transacao);
                 }
                 switch (operacaoStr.charAt(0)) {
@@ -80,31 +81,37 @@ public class AgendaController {
                         operacao = new Operacao(Tipo.COMMIT, transacao);
                         break;
                 }
+                indiceAgenda++;
                 transacao.addOperacao(operacao);
                 agenda.addOperacao(operacao);
             }
         }
     }
-    
+
     public void executar() {
         historia = new Agenda();
         Operacao operacao;
-        
+        boolean executada = false;
+
         while ((operacao = agenda.getNextOperacao()) != null) {
             switch (operacao.getTipo()) {
                 case COMMIT:
-                    operacao.setExecutada(true);
+                    executada = true;
                     operacao.getTransacao().unlockAll();
                     break;
                 case READ:
-                    operacao.getVariavel().getSharedLock(operacao);
+                    executada = operacao.getVariavel().getSharedLock(operacao);
                     break;
                 case WRITE:
-                    operacao.getVariavel().getExclusiveLock(operacao);
+                    executada = operacao.getVariavel().getExclusiveLock(operacao);
                     break;
             }
-            historia.addOperacao(operacao);
+            if (executada) {
+                operacao.setExecutada(true);
+                historia.addOperacao(operacao);
+            }
         }
+
         if (historia.getOperacoes().size() == agenda.getOperacoes().size()) {
             //sucesso
         } else {
