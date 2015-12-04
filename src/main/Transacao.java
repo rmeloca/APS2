@@ -56,12 +56,38 @@ public class Transacao {
         return ((Transacao) obj).id == id;
     }
 
+    private List<Variavel> getVariaveis() {
+        List<Variavel> variaveis = new ArrayList<>();
+        for (Operacao operacao : operacoes) {
+            if (!variaveis.contains(operacao.getVariavel())) {
+                variaveis.add(operacao.getVariavel());
+            }
+        }
+        return variaveis;
+    }
+
+    private Operacao getMaiorPrioridade(Variavel variavel) {
+        Operacao menor = null;
+        for (Operacao operacao : operacoes) {
+            if (operacao.getVariavel().equals(variavel)) {
+                if (operacao.getTipo().equals(Tipo.WRITE)) {
+                    return operacao;
+                } else if (menor == null) {
+                    menor = operacao;
+                }
+            }
+        }
+        return menor;
+    }
+
     void unlockAll() {
         unlockAll(true);
     }
 
     void unlockAll(boolean foramExecutadas) {
-        for (Operacao operacao : operacoes) {
+        Operacao operacao;
+        for (Variavel variavel : getVariaveis()) {
+            operacao = getMaiorPrioridade(variavel);
             if (!operacao.getTipo().equals(Tipo.COMMIT)) {
                 operacao.getVariavel().unlock(operacao);
             }
