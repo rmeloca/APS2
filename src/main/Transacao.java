@@ -35,6 +35,11 @@ public class Transacao {
         this.indice = indice;
     }
 
+    public List<Operacao> getOperacoes() {
+        return operacoes;
+    }
+
+
     public boolean estaNaEspera() {
         Operacao operacao;
 

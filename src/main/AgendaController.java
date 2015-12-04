@@ -16,18 +16,18 @@ import java.util.ArrayList;
  * @author romulo
  */
 public class AgendaController {
-    
+
     private Agenda agenda;
     private Agenda historia;
-    
+
     public Agenda getAgenda() {
         return agenda;
     }
-    
+
     public Agenda getHistoria() {
         return historia;
     }
-    
+
     void parseAgendaFromFile(String url) throws FileNotFoundException, IOException {
         String linha;
         String[] operacoes;
@@ -38,10 +38,10 @@ public class AgendaController {
         int idTransacao;
         Variavel variavel;
         Character valor;
-        
+
         agenda = new Agenda();
         agenda.setIndice(0);
-        
+
         fileReader = new FileReader(url);
         bufferedReader = new BufferedReader(fileReader);
         while ((linha = bufferedReader.readLine()) != null) {
@@ -85,11 +85,11 @@ public class AgendaController {
             }
         }
     }
-    
+
     public void executar() {
         historia = new Agenda();
         Operacao operacao;
-        
+
         while ((operacao = agenda.getNextOperacao()) != null) {
             switch (operacao.getTipo()) {
                 case COMMIT:
@@ -103,6 +103,7 @@ public class AgendaController {
                     operacao.getVariavel().getExclusiveLock(operacao);
                     break;
             }
+            //verificar tempos
             historia.addOperacao(operacao);
         }
         if (historia.getOperacoes().size() == agenda.getOperacoes().size()) {
@@ -110,6 +111,22 @@ public class AgendaController {
         } else {
             //abort
         }
+    }
+
+    public void verificarDeadLock() {
+        long tempoLimite = 100;
+        ArrayList<Transacao> listTran = new ArrayList<>();
+        for (Operacao op : historia.getOperacoes()) {
+            if ((op.getTempoInicial() - (System.currentTimeMillis())) > tempoLimite) {
+                if (!listTran.contains(op)) {
+                    listTran.add(op.getTransacao());
+                }
+            }
+        }
+        for(Transacao t : listTran){
+            abortar(t);
+        }
+
     }
 
     public void abortar(Transacao t) {
@@ -127,7 +144,9 @@ public class AgendaController {
         pos = historia.getOperacoes().size();
         nova.setIndice(historia.getIndice());
         listTran.add(t);
-
+        if(!historia.getTransacoes().contains(t)){
+            return;
+        }
         //Verifica quais variaveis foram alteradas
         for (int i = 0; i < pos; i++) {
             op = historia.getOperacoes().get(i);
@@ -151,6 +170,7 @@ public class AgendaController {
                     tran = historia.getOperacoes().get(j).getTransacao();
                     tran.unlockAll(false);
                     listTran.add(tran);
+                    tran.setIndice(getIndOp(tran.getOperacoes().get(0)));
                 }
 
             }
@@ -163,9 +183,18 @@ public class AgendaController {
                 historia.getOperacoes().remove(i);
                 i--;
                 pos--;
-//altero ind na agenda            
             }
         }
 
+    }
+
+    int getIndOp(Operacao op) {
+
+        for (int i = 0; i < agenda.getOperacoes().size(); i++) {
+            if (agenda.getOperacoes().get(i).equals(op)) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
