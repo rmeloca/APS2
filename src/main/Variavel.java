@@ -51,22 +51,14 @@ public class Variavel {
     }
 
     public void nextExecutando() {
-        if (executando.isEmpty()) {
+        if (!executando.isEmpty()) {
             return;
         }
         if (filaEspera.isEmpty()) {
             return;
         }
-        if (filaEspera.get(0).getTipo().equals(Tipo.WRITE)) {
-            executando.add(filaEspera.get(0));
-            return;
-        }
-        for (int i = 0; i < filaEspera.size(); i++) {
-            if (filaEspera.get(i).getTipo().equals(Tipo.WRITE)) {
-                return;
-            }
-            executando.add(filaEspera.get(i));
-        }
+        filaEspera.remove(filaEspera.get(0));
+        return;
 
     }
 
@@ -112,6 +104,7 @@ public class Variavel {
             //equals?
             //haverá apenas um objeto de mesmo tipo, então não será um problema remoção por comparação
             if (executando.isEmpty()) {
+                nextExecutando();
                 setStatus(Status.UNLOCKED);
             }
         }
