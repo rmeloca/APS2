@@ -61,10 +61,12 @@ public class Transacao {
     }
 
     void unlockAll(boolean foramExecutadas) {
+        Variavel v = operacoes.get(0).getVariavel();
         for (Operacao operacao : operacoes) {
             if (!operacao.getTipo().equals(Tipo.COMMIT)) {
                 operacao.getVariavel().unlock(operacao);
             }
+            v.nextExecutando();
             operacao.setExecutada(foramExecutadas);
         }
     }
