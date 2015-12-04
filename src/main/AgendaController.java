@@ -108,12 +108,7 @@ public class AgendaController {
                 operacao.getTransacao().setIndice(operacao.getTransacao().getIndice() + 1);
                 historia.addOperacao(operacao);
             }
-        }
-
-        if (historia.getOperacoes().size() == agenda.getOperacoes().size()) {
-            //sucesso
-        } else {
-            //abort
+            verificarDeadLock();
         }
     }
 
