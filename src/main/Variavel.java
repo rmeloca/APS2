@@ -50,6 +50,26 @@ public class Variavel {
         return filaEspera;
     }
 
+    public void nextExecutando() {
+        if (executando.isEmpty()) {
+            return;
+        }
+        if (filaEspera.isEmpty()) {
+            return;
+        }
+        if (filaEspera.get(0).getTipo().equals(Tipo.WRITE)) {
+            executando.add(filaEspera.get(0));
+            return;
+        }
+        for (int i = 0; i < filaEspera.size(); i++) {
+            if (filaEspera.get(i).getTipo().equals(Tipo.WRITE)) {
+                return;
+            }
+            executando.add(filaEspera.get(i));
+        }
+
+    }
+
     boolean getSharedLock(Operacao operacao) {
         switch (getStatus()) {
             case UNLOCKED:
