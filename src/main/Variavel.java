@@ -57,7 +57,15 @@ public class Variavel {
         if (filaEspera.isEmpty()) {
             return;
         }
-        filaEspera.remove(filaEspera.get(0));
+        if (filaEspera.get(0).equals(Tipo.WRITE)) {
+            filaEspera.remove(filaEspera.get(0));
+        }
+        for (int i = 0; i < filaEspera.size(); i++) {
+            if (filaEspera.get(i).getTipo().equals(Tipo.WRITE)) {
+                return;
+            }
+                filaEspera.remove(filaEspera.get(i));
+        }
         return;
 
     }
