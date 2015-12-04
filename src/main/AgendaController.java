@@ -38,10 +38,10 @@ public class AgendaController {
         Character valor;
         Variavel variavel;
         int idTransacao;
-        int indiceAgenda;
+        int indiceAgenda = 0;
 
         agenda = new Agenda();
-        indiceAgenda = 0;
+        agenda.setIndice(0);
 
         fileReader = new FileReader(url);
         bufferedReader = new BufferedReader(fileReader);
@@ -119,6 +119,22 @@ public class AgendaController {
         }
     }
 
+    public void verificarDeadLock() {
+        long tempoLimite = 100;
+        ArrayList<Transacao> listTran = new ArrayList<>();
+        for (Operacao op : historia.getOperacoes()) {
+            if ((op.getTempoInicial() - (System.currentTimeMillis())) > tempoLimite) {
+                if (!listTran.contains(op)) {
+                    listTran.add(op.getTransacao());
+                }
+            }
+        }
+        for(Transacao t : listTran){
+            abortar(t);
+        }
+
+    }
+
     public void abortar(Transacao t) {
         ArrayList<Variavel> listVar = new ArrayList<>();
         ArrayList<Integer> listPos = new ArrayList<>();
@@ -134,7 +150,9 @@ public class AgendaController {
         pos = historia.getOperacoes().size();
         nova.setIndice(historia.getIndice());
         listTran.add(t);
-
+        if(!historia.getTransacoes().contains(t)){
+            return;
+        }
         //Verifica quais variaveis foram alteradas
         for (int i = 0; i < pos; i++) {
             op = historia.getOperacoes().get(i);
@@ -158,6 +176,7 @@ public class AgendaController {
                     tran = historia.getOperacoes().get(j).getTransacao();
                     tran.unlockAll(false);
                     listTran.add(tran);
+                    tran.setIndice(getIndOp(tran.getOperacoes().get(0)));
                 }
 
             }
@@ -170,9 +189,18 @@ public class AgendaController {
                 historia.getOperacoes().remove(i);
                 i--;
                 pos--;
-//altero ind na agenda            
             }
         }
 
+    }
+
+    int getIndOp(Operacao op) {
+
+        for (int i = 0; i < agenda.getOperacoes().size(); i++) {
+            if (agenda.getOperacoes().get(i).equals(op)) {
+                return i;
+            }
+        }
+        return -1;
     }
 }

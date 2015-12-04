@@ -60,6 +60,7 @@ public class Variavel {
                 addExecutando(operacao);
                 break;
             default:
+                operacao.setTempoInicial(System.currentTimeMillis());
                 addFilaEspera(operacao);
                 return false;
         }
@@ -72,6 +73,7 @@ public class Variavel {
             addExecutando(operacao);
             return true;
         } else {
+            operacao.setTempoInicial(System.currentTimeMillis());
             addFilaEspera(operacao);
         }
         return false;
